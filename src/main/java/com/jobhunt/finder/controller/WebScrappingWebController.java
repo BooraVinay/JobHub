@@ -5,6 +5,9 @@ import com.jobhunt.finder.service.WebScrapingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,9 +28,29 @@ public class WebScrappingWebController {
         List<Map<String, String>> jobPostings = webScrapingService.urlMethod();
         model.addAttribute("jobPostings", jobPostings);
 
-        // Log the content of jobPostings
-        jobPostings.forEach(System.out::println);
+        return "home";
+    }
+    @GetMapping("/{keyword}")
+    public String search(Model model, @PathVariable String keyword, @RequestParam String location) throws IOException, InterruptedException {
 
-        return "index";
+        webScrapingService.parseString(keyword,location,1);
+
+
+
+
+        return "home";
+    }
+    @GetMapping("/aboutus")
+    public String aboutUsPage()  {
+        return "aboutus";
+    }
+    @GetMapping("/contactus")
+    public String contactUsPage()  {
+        return "contactus";
+    }
+    @PostMapping ("/upload")
+    public String uploadPage()  {
+
+        return "upload";
     }
 }

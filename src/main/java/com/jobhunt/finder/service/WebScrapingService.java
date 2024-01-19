@@ -50,7 +50,7 @@ public class WebScrapingService {
     public List<Map<String,String>> urlMethod() throws IOException, InterruptedException {
         List<Map<String,String>> data = new ArrayList<>();
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             String URL = "https://www.linkedin.com/jobs/search?keywords=&location=india&geoId=&trk=public_jobs_jobs-search-bar_search-submit&original_referer=https%3A%2F%2Fwww.linkedin.com%2Fjobs%2Fsearch%3Ftrk%3Dguest_homepage-basic_guest_nav_menu_jobs%26position%3D1%26pageNum%3D0&position=1&pageNum=" + i;
             data.addAll(scrapeQuotes(URL));
         }
@@ -86,5 +86,9 @@ public class WebScrapingService {
 
         int randomIndex = new Random().nextInt(userAgents.length);
         return userAgents[randomIndex];
+    }
+    public String parseString(String keyword,String location,int num){
+        String URL="https://www.linkedin.com/jobs/search?keywords="+keyword+"&location="+location+"&position=1&pageNum="+num;
+        return URL;
     }
 }

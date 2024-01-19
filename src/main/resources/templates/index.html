@@ -1,127 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" ></script>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
 
-        header, footer {
-            background-color: #333;
-            padding: 15px;
-            text-align: center;
-            color: #fff;
-        }
-
-        h1, h2 {
-            color: #3498db;
-            margin-bottom: 20px;
-        }
-
-        .job-card {
-            margin: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #2c3e50;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease-in-out;
-            box-sizing: border-box;
-        }
-
-        .job-card:hover {
-            transform: scale(1.05);
-        }
-
-        .job-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 20px;
-            font-size: 80%;
-            color: #e74c3c;
-            background-color: #3498db;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .job-link:hover {
-            background-color: #2980b9;
-        }
-
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            padding: 15px;
-        }
-
-        .search-container {
-            margin-bottom: 20px;
-            text-align: center;
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-input {
-            flex-grow: 1;
-            padding: 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            margin-right: 15px;
-            width: calc(100% - 200px); /* Adjusted width to leave space for the button */
-        }
-
-        .search-button {
-            padding: 15px 30px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background-color: #3498db;
-            color: #ffffff;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .search-button:hover {
-            background-color: #2980b9;
-        }
-        .highlight {
-            background-color: yellow;
-        }
-    </style>
 </head>
+
 <body>
 <header>
-    <h1>ChronoErgasia</h1>
+    <h1>JOBHUB</h1>
 </header>
 
+<nav class="navbar navbar-dark bg-dark">
+    <img src="/img/logo.png" alt="Logo">
+    <a href="/">Home</a>
+    <a href="/aboutus">About Us</a>
+    <a href="/contactus">Contact Us</a>
+    <a href="/upload">Upload a Job</a>
+</nav>
 
+<div class="container">
+    <div class="search-container">
+        <input type="text" class="search-input" id="searchInput" placeholder=" 🔍 Search...">
 
-
-    <div class="container">
-        <div class="search-container">
-            <input type="text" class="search-input" id="searchInput" placeholder=" 🔍 Search...">
-
-            <button class="search-button" onclick="handleSearch()">Search</button>
-            <br/><br/><span>
-            <select id="sortOptions" class="search-button" onchange="handleSort()">
-                <option value="mostRecent">Most Recent</option>
-                <option value="oldestFirst">Oldest First</option>
-            </select>
+        <button class="search-button" onclick="handleSearch()">Search</button>
+        <br/><br/><span>
+                <select id="sortOptions" class="sort-options" onchange="handleSort()">
+                    <option value="mostRecent">Most Recent</option>
+                    <option value="oldestFirst">Oldest First</option>
+                </select>
             </span>
-        </div>
-        <div class="row job-cards" id="jobCardsContainer" th:each="jobPosting : ${jobPostings}">
-            <div class="col-md-2 job-card" th:id="${'jobCard_' + jobPosting['Job Title:']}">
+    </div>
+    <div class="row job-listings" id="jobCardsContainer">
+        <div class="job-cards" th:each="jobPosting : ${jobPostings}">
+            <div class="col-md-4 job-card" th:id="${'jobCard_' + jobPosting['Job Title:']}">
                 <strong>Title:</strong> <span th:text="${jobPosting['Job Title:']}" class="job-title"></span><br/>
                 <strong>Company:</strong> <span th:text="${jobPosting['Company Name:']}" class="job-company"></span><br/>
                 <strong>Location:</strong> <span th:text="${jobPosting['Job Location:']}"></span><br/>
@@ -131,104 +47,13 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <footer>
     <p>&copy; Vinay Kumar Boora. All rights reserved.</p>
 </footer>
-<script>
-        function customPartialMatch(fullText, partialText) {
-            // Create a regular expression with the partial text and the 'i' flag for case-insensitivity
-            var regex = new RegExp(partialText, 'i');
-
-            // Test if the full text matches the regular expression
-            return regex.test(fullText);
-        }
-
-        // Function to handle the search
-        function handleSearch() {
-            var searchInput = document.getElementById('searchInput');
-            var searchTerm = searchInput.value.trim().toLowerCase();
-
-            // Get all job cards
-            var jobCards = document.querySelectorAll('.job-card');
-
-            // Iterate through job cards and show/hide based on the search term
-            jobCards.forEach(function (jobCard) {
-                var jobTitle = jobCard.querySelector('.job-title').textContent.toLowerCase();
-                var jobCompany = jobCard.querySelector('.job-company').textContent.toLowerCase();
-                var match = customPartialMatch(jobTitle, searchTerm) || customPartialMatch(jobCompany, searchTerm);
-
-                // Toggle visibility based on matching
-                jobCard.style.display = match ? 'block' : 'none';
-
-                // Highlight matching text in title
-                var titleSpan = jobCard.querySelector('.job-title');
-                titleSpan.innerHTML = titleSpan.textContent.replace(new RegExp('(' + searchTerm + ')', 'ig'), '<span class="highlight">$1</span>');
-
-                // Highlight matching text in company
-                var companySpan = jobCard.querySelector('.job-company');
-                companySpan.innerHTML = companySpan.textContent.replace(new RegExp('(' + searchTerm + ')', 'ig'), '<span class="highlight">$1</span>');
-            });
-        }
-
-        function handleSort() {
-        var sortOption = document.getElementById('sortOptions').value;
-        var jobCardsContainer = document.getElementById('jobCardsContainer');
-        var jobCards = jobCardsContainer.querySelectorAll('.job-card');
-
-        var sortedJobCards = Array.from(jobCards).sort(function (a, b) {
-            var dateA = getDateValue(a.querySelector('.job-date').textContent);
-            var dateB = getDateValue(b.querySelector('.job-date').textContent);
-
-            if (sortOption === 'mostRecent') {
-                return compareDates(dateB, dateA);
-            } else {
-                return compareDates(dateA, dateB);
-            }
-        });
-
-        // Clear current job cards and append sorted ones
-        jobCardsContainer.innerHTML = '';
-        sortedJobCards.forEach(function (jobCard) {
-            jobCardsContainer.appendChild(jobCard.cloneNode(true));
-        });
-    }
-
-    // Helper function to compare dates, handling cases where a date might be undefined
-    function compareDates(dateA, dateB) {
-        if (dateA && dateB) {
-            return dateA - dateB;
-        } else if (dateA) {
-            return -1;
-        } else if (dateB) {
-            return 1;
-        } else {
-            return 0; // Both dates are undefined
-        }
-    }
-
-    // Helper function to extract a date value from the job date text
-    function getDateValue(dateText) {
-        // Example: Assuming the date is in a simple format like "YYYY-MM-DD"
-        // You may need to adjust this based on your actual date format
-        var dateParts = dateText.split('-');
-        if (dateParts.length === 3) {
-            var year = parseInt(dateParts[0], 10);
-            var month = parseInt(dateParts[1], 10);
-            var day = parseInt(dateParts[2], 10);
-
-            // Return a Date object or a numeric representation of the date
-            // depending on your sorting needs
-            return new Date(year, month - 1, day);
-        } else {
-            // Return undefined if the date format is not as expected
-            return undefined;
-        }
-    }
-    </script>
 
 
 </body>
+
 </html>
