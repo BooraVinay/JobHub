@@ -1,0 +1,17 @@
+<div th:fragment="jobPostings" th:remove="tag">
+    <div class="col d-none d-md-block" th:each="jobPosting : ${jobPostings}">
+        <div class="card h-100 bg-gradient-to-br from-blue-200 via-blue-100 to-gray-800 p-4 rounded-lg">
+            <h5 class="card-title text-2xl font-semibold mb-2">Title:</h5>
+            <span th:text="${jobPosting['Job Title:']}" class="job-title text-blue-700"></span>
+            <p class="card-text text-sm mb-2">Company:</p>
+            <span th:text="${jobPosting['Company Name:']}" class="job-company text-gray-700"></span>
+            <p class="card-text text-sm mb-2">Location:</p>
+            <span th:text="${jobPosting['Job Location:']}" class="text-gray-800"></span>
+            <p class="card-text text-sm mb-2">Posting Date:</p>
+            <span th:text="${jobPosting['Posting Date:']}" class="text-gray-800"></span>
+            <p class="card-text text-sm mb-2">Posting DateTime:</p>
+            <span th:text="${jobPosting['Posting DateTime:']}" class="text-gray-800"></span>
+            <a th:href="${jobPosting['jobUrl']}" class="btn btn-outline-success mt-3">Details</a>
+        </div>
+    </div>
+</div>

@@ -1,14 +1,13 @@
-// LinkedInScraper.java
 package com.jobhunt.finder.service;
 
-import com.jobhunt.finder.utilities.Utilities;
+import com.jobhunt.finder.utils.Utilities;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,23 +17,24 @@ import java.util.List;
 import java.util.Map;
 
 
+@Slf4j
 @Service
 public class LinkedInScraper implements JobScraper {
 
     @Override
     @Cacheable("linkedInDataCache")
-    public List<Map<String, String>> scrapeData(String URL) throws IOException {
+    public List<Map<String, String>> scrapeData(String url) throws IOException {
         Document document = null;
 
         try {
-            Connection connection = Jsoup.connect(URL);
+            Connection connection = Jsoup.connect(url);
             connection.header("User-Agent", Utilities.getRandomUserAgent());
             connection.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
             connection.header("Accept-Language", "en-US,en;q=0.9");
             connection.header("Connection", "keep-alive");
             document = connection.get();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Exception occurred in LinkedIn Scraper " + e);
         }
 
         Elements elements = document.select("[data-entity-urn^='urn:li:jobPosting']");
@@ -58,8 +58,7 @@ public class LinkedInScraper implements JobScraper {
 
     @Override
     public String buildURL(String keyword, String location, int num) {
-        return "https://www.linkedin.com/jobs/search?keywords=" + keyword +
-                "&location=" + location + "&pageNum=" + num;
+        return "https://www.linkedin.com/jobs/search?keywords=" + keyword + "&location=" + location + "&pageNum=" + num;
     }
 
 
