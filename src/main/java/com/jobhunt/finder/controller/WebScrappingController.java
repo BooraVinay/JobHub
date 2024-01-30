@@ -1,7 +1,7 @@
 package com.jobhunt.finder.controller;
 
 
-import com.jobhunt.finder.service.WebScrapingService;
+/*import com.jobhunt.finder.service.LinkedInScraper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import java.util.Map;
 @RequestMapping("/job-postings")
 public class WebScrappingController {
 
-    private final WebScrapingService webScrapingService;
+    private final LinkedInScraper webScrapingService;
 
 
     public WebScrappingController(WebScrapingService webScrapingService) {
@@ -35,4 +35,4 @@ public class WebScrappingController {
             throw new RuntimeException(e);
         }
     }
-}
+}*/

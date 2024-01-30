@@ -1,10 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #1a1a1a; /* Dark background color */
+            color: #fff; /* Text color */
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
 
+        /* Header Styles */
+        header {
+            background-color: #341c4b; /* Header background color */
+            color: #fed23f; /* Header text color */
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Navigation Styles */
+        nav {
+            background: linear-gradient(to right, #202040, #543864); /* Gradient background for the nav */
+            padding: 10px;
+        }
+
+        nav a {
+            color: #fff; /* Text color for nav links */
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 10px;
+            border-radius: 5px;
+        }
+
+        nav a:hover,
+        nav a.active {
+            background-color: #2e2e5e; /* Highlight color for nav links on hover or when active */
+            color: #ffffff; /* Text color on hover or when active */
+        }
+
+        /* Form Styles */
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(36, 47, 59, 0.8); /* Semi-transparent form background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-label {
+            color: #fed23f; /* Label text color */
+        }
+
+        .form-control {
+            background-color: rgba(61, 72, 89, 0.9); /* Semi-transparent input background */
+            color: #fff; /* Input text color */
+            border: none; /* Remove border */
+            border-radius: 5px;
+            margin-bottom: 15px;
+            outline: none; /* Remove input outline */
+            padding: 8px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 5px #fed23f; /* Input focus shadow color */
+        }
+
+        .btn-outline-success {
+            color: #fed23f; /* Button text color */
+            border-color: #fed23f; /* Button border color */
+            background-color: rgba(46, 56, 71, 0.9); /* Semi-transparent button background */
+        }
+
+        .btn-outline-success:hover {
+            background-color: #fed23f; /* Button background color on hover */
+            color: #2c2c2c; /* Button text color on hover */
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #341c4b; /* Footer background color */
+            padding: 24px 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 20px;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        /* Typing Animation Styles */
+        .typed-cursor {
+            opacity: 1;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        .typed-cursor.typed-cursor--blink {
+            animation: typedjsBlink 0.7s infinite;
+            -webkit-animation: typedjsBlink 0.7s infinite;
+            animation: typedjsBlink 0.7s infinite;
+        }
+
+        @keyframes typedjsBlink {
+            50% {
+                opacity: 0.0;
+            }
+        }
+
+        @-webkit-keyframes typedjsBlink {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-white">
+<header class="bg-violet-800 text-white text-center py-4">
+    <h1 class="text-4xl">JOB HUB FINDER</h1>
+</header>
+
+<nav>
+    <div class="container mx-auto flex items-center justify-between">
+        <img class="w-20" src="/img/logo.png" alt="Logo">
+        <div class="hidden lg:flex space-x-4">
+            <a href="/" class="hover:text-white">Home</a>
+            <a href="/contactus" class="hover:text-white">Contact Us</a>
+            <a href="/aboutus" class="hover:text-white">About Us</a>
+            <a href="/upload" class="hover:text-white active">Upload JOB</a>
+        </div>
+    </div>
+</nav>
+
+<div class="form-container">
+    <form th:action="@{/upload}" th:object="${jobForm}" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="jobTitle" class="form-label">Job Title</label>
+            <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}" required>
+        </div>
+        <div class="mb-3">
+            <label for="companyName" class="form-label">Company Name</label>
+            <input type="text" class="form-control" id="companyName" th:field="*{companyName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="jobLocation" class="form-label">Job Location</label>
+            <input type="text" class="form-control" id="jobLocation" th:field="*{jobLocation}" required>
+        </div>
+        <div class="mb-3">
+            <label for="postingDate" class="form-label">Posting Date</label>
+            <input type="text" class="form-control" id="postingDate" th:field="*{postingDate}" required>
+        </div>
+        <div class="mb-3">
+            <label for="jobDescription" class="form-label">Job Description</label>
+            <textarea class="form-control" id="jobDescription" th:field="*{jobDescription}" rows="5"
+                      required></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-success">Submit</button>
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2024 Job Hub Finder. All rights reserved.</p>
+</footer>
 </body>
+
 </html>
