@@ -1,6 +1,6 @@
 package com.jobhunt.finder.service;
 
-import com.jobhunt.finder.utilities.Utilities;
+import com.jobhunt.finder.utils.Utilities;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -23,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
 @Slf4j
+@Service
 public class NaukariScraper implements JobScraper {
 
     @Override

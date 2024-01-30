@@ -1,12 +1,14 @@
 // Utilities.java
-package com.jobhunt.finder.utilities;
+package com.jobhunt.finder.utils;
 
 import java.util.Random;
 
 public class Utilities {
 
+    static Random rand = new Random();
+
     public static String getRandomUserAgent() {
-        String[] userAgents = {
+        final String[] userAgents = {
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36",
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36",
@@ -32,7 +34,10 @@ public class Utilities {
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15",
         };
 
-        int randomIndex = new Random().nextInt(userAgents.length);
+        int randomIndex = rand.nextInt(userAgents.length);
         return userAgents[randomIndex];
     }
+
+    private Utilities(){}
+
 }
