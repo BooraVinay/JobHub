@@ -55,15 +55,15 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-
         .form-label {
-            color: #fed23f; /* Label text color */
+            color: #3fb2ed; /* New label text color */
         }
 
         .form-control {
             background-color: rgba(61, 72, 89, 0.9); /* Semi-transparent input background */
             color: #fff; /* Input text color */
             border: none; /* Remove border */
+            caret-color: #fff;
             border-radius: 5px;
             margin-bottom: 15px;
             outline: none; /* Remove input outline */
@@ -71,17 +71,18 @@
         }
 
         .form-control:focus {
-            box-shadow: 0 0 5px #fed23f; /* Input focus shadow color */
+            box-shadow: 0 0 5px #3fb2ed; /* Input focus shadow color */
         }
 
+
         .btn-outline-success {
-            color: #fed23f; /* Button text color */
-            border-color: #fed23f; /* Button border color */
+            color: #3fb2ed; /* New button text color */
+            border-color: #3fb2ed; /* New button border color */
             background-color: rgba(46, 56, 71, 0.9); /* Semi-transparent button background */
         }
 
         .btn-outline-success:hover {
-            background-color: #fed23f; /* Button background color on hover */
+            background-color: #3fb2ed; /* New button background color on hover */
             color: #2c2c2c; /* Button text color on hover */
         }
 
@@ -154,31 +155,32 @@
 </nav>
 
 <div class="form-container">
-    <form th:action="@{/upload}" th:object="${jobForm}" method="post" enctype="multipart/form-data">
+    <form hx-post="@{/upload}" hx-trigger="submit" hx-target="#result" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="jobTitle" class="form-label">Job Title</label>
-            <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}" required>
+            <input type="text" class="form-control" id="jobTitle" name="jobTitle" required>
         </div>
         <div class="mb-3">
             <label for="companyName" class="form-label">Company Name</label>
-            <input type="text" class="form-control" id="companyName" th:field="*{companyName}" required>
+            <input type="text" class="form-control" id="companyName" name="companyName" required>
         </div>
         <div class="mb-3">
             <label for="jobLocation" class="form-label">Job Location</label>
-            <input type="text" class="form-control" id="jobLocation" th:field="*{jobLocation}" required>
+            <input type="text" class="form-control" id="jobLocation" name="jobLocation" required>
         </div>
         <div class="mb-3">
             <label for="postingDate" class="form-label">Posting Date</label>
-            <input type="text" class="form-control" id="postingDate" th:field="*{postingDate}" required>
+            <input type="text" class="form-control" id="postingDate" name="postingDate" required>
         </div>
         <div class="mb-3">
             <label for="jobDescription" class="form-label">Job Description</label>
-            <textarea class="form-control" id="jobDescription" th:field="*{jobDescription}" rows="5"
-                      required></textarea>
+            <textarea class="form-control" id="jobDescription" name="jobDescription" rows="5" required></textarea>
         </div>
         <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
 </div>
+<div id="result" hx-target="#result"></div>
+
 
 <footer>
     <p>&copy; 2024 Job Hub Finder. All rights reserved.</p>

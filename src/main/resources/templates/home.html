@@ -145,15 +145,15 @@
 <nav>
     <div class="container mx-auto flex items-center justify-between">
         <img class="w-20" src="/img/logo.png" alt="Logo">
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                   id="searchInput">
-            <button class="btn btn-outline-success" type="button" onclick="handleSearch()">Search</button>
+        <form class="d-flex" hx-post="/search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+            <button class="btn btn-outline-success" type="button" hx-trigger="click" hx-indicator="#loadingSpinner" hx-target="#jobCardsContainer" hx-vals="{'searchTerm': document.getElementById('searchInput').value}">Search</button>
         </form>
+
         <form class="d-flex" id="searchForm" th:action="@{/search}" method="get">
             <div class="mb-3">
                 <label for="jobType" class="form-label">Job Type</label>
-                <select class="form-select" id="jobType" name="jobType" onchange="handleJobTypeChange()">
+                <select class="form-select" id="jobType" name="jobType" hx-post="/filter/jobs" hx-target="#jobCardsContainer">
                     <option value="software-engineer">Software Engineer</option>
                     <option value="data-scientist">Data Scientist</option>
                     <option value="web-developer">Web Developer</option>
@@ -163,7 +163,7 @@
             <span>  </span>
             <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
-                <select class="form-select" id="location" name="location" hx-post="/filter/jobs/location" hx-target="#jobCardsContainer">
+                <select class="form-select" id="location" name="location" hx-post="/filter/jobs" hx-target="#jobCardsContainer">
                     <option value="hyderabad">Hyderabad</option>
                     <option value="bangalore">Bangalore</option>
                     <option value="pune">Pune</option>
@@ -187,6 +187,8 @@
     </div>
 </nav>
 <br><br>
+<div id="loadingSpinner" style="display: none;">Loading...</div>
+<br>
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4" id="jobCardsContainer">
         <div class="col d-none d-md-block" th:each="jobPosting : ${jobPostings}">
@@ -211,38 +213,34 @@
     <p>&copy; 2024 Job Hub Finder. All Rights Reserved.</p>
 </footer>
 
-<script>
-function customPartialMatch(fullText, partialText) {
-var regex = new RegExp(partialText, 'i');
-return regex.test(fullText);
-}
 
-function handleSearch() {
-    var searchInput = document.getElementById('searchInput');
-    var searchTerm = searchInput.value.trim().toLowerCase();
-    var jobCards = document.querySelectorAll('.card');
 
-    jobCards.forEach(function (jobCard) {
-        var jobTitle = jobCard.querySelector('.job-title').textContent.toLowerCase();
-        var jobCompany = jobCard.querySelector('.job-company').textContent.toLowerCase();
-        var match = customPartialMatch(jobTitle, searchTerm) || customPartialMatch(jobCompany, searchTerm);
+    <script>
+        var options = {
+        strings: ["doctor...", "engineer...", "scientist...", "developer...", "MlEngineer..."],
+        typeSpeed: 50,
+        backSpeed: 30,
+        loop: true,
+        onComplete: function(self) {
+        var currentString = self.strings[self.strPos];
+        document.getElementById("searchInput").setAttribute("placeholder", currentString);
+        setTimeout(function() {
+        self.stop(); // Stop typing animation after the placeholder is set
+    }, 1000); // Adjust the delay as needed
+    }
+    };
 
-        // Use Bootstrap utility classes to show/hide elements
-        jobCard.classList.toggle('d-none', !match);
-        jobCard.classList.toggle('d-md-block', match);
+        var typed = new Typed("#searchInput", options);
 
-        var titleSpan = jobCard.querySelector('.job-title');
-        titleSpan.innerHTML = titleSpan.textContent.replace(new RegExp('(' + searchTerm + ')', 'ig'), '<span class="highlight">$1</span>');
-
-        var companySpan = jobCard.querySelector('.job-company');
-        companySpan.innerHTML = companySpan.textContent.replace(new RegExp('(' + searchTerm + ')', 'ig'), '<span class="highlight">$1</span>');
+        document.getElementById("searchInput").addEventListener("click", function() {
+        typed.stop(); // Stop typing animation when the input field is clicked
+            document.getElementById("searchInput").value='';
     });
-}
+</script>
 
 
 
 
-    </script>
 </body>
 
 </html>
